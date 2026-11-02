@@ -587,6 +587,13 @@
     </main>
 
     <script>
+        const sesionActual = JSON.parse(
+    localStorage.getItem("novafokus_sesion") || "null"
+);
+
+if (!sesionActual) {
+    window.location.replace("login.html");
+}
         const formulario = document.getElementById('formulario-meta');
         const lista = document.getElementById('lista-metas');
         const mensaje = document.getElementById('mensaje-meta');

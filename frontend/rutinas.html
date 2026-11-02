@@ -576,6 +576,13 @@
 </div>
 
 <script>
+    const sesionActual = JSON.parse(
+    localStorage.getItem("novafokus_sesion") || "null"
+);
+
+if (!sesionActual) {
+    window.location.replace("login.html");
+}
     const formulario = document.getElementById("formulario-rutina");
     const lista = document.getElementById("lista-rutinas");
 
