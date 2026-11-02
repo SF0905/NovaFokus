@@ -1,0 +1,822 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Construye hábitos positivos y registra tu constancia con NovaFokus.">
+    <title>Mis hábitos | NovaFokus</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --primary: #492C99;
+            --dark: #281270;
+            --text: #29253D;
+            --muted: #89859A;
+            --background: #F7F6FC;
+            --white: #FFFFFF;
+            --border: #ECEAF3;
+            --green: #16803C;
+            --red: #B42318;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: white;
+            border-right: 1px solid var(--border);
+            padding: 28px 18px;
+            position: fixed;
+            inset: 0 auto 0 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: var(--primary);
+            padding: 0 12px;
+            margin-bottom: 45px;
+        }
+
+        .menu-label {
+            color: #A29DB1;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            padding: 0 12px;
+            margin-bottom: 13px;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #77738A;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #F0ECFA;
+            color: var(--primary);
+        }
+
+        .menu-icon {
+            width: 22px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 38px 42px;
+            max-width: 1600px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+            color: var(--dark);
+            font-size: 27px;
+        }
+
+        .topbar p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .back-link {
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .intro-card {
+            background: linear-gradient(110deg, #492C99, #281270);
+            color: white;
+            padding: 27px 30px;
+            border-radius: 17px;
+            margin-bottom: 25px;
+        }
+
+        .intro-card h2 {
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .intro-card p {
+            color: #E4DDF7;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            padding: 19px;
+        }
+
+        .stat span {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .stat h3 {
+            color: var(--dark);
+            font-size: 25px;
+            margin-top: 7px;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 23px;
+        }
+
+        .panel h2 {
+            color: var(--dark);
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .panel-description {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #E1DEEB;
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(73,44,153,0.09);
+        }
+
+        .primary-button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 9px;
+            background: var(--primary);
+            color: white;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .primary-button:hover {
+            background: var(--dark);
+        }
+
+        .message {
+            min-height: 18px;
+            margin-top: 12px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .list-header h2 {
+            margin: 0;
+        }
+
+        .filter {
+            padding: 9px 11px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            font-family: inherit;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .habit-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .habit-card {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 17px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .habit-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .habit-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            background: #F0ECFA;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .habit-info h3 {
+            font-size: 14px;
+            color: var(--dark);
+            overflow-wrap: anywhere;
+        }
+
+        .habit-info p {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        .habit-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .check-button {
+            border: none;
+            background: #EAF6EE;
+            color: var(--green);
+            border-radius: 8px;
+            padding: 9px 11px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .check-button.done {
+            background: #F0ECFA;
+            color: var(--primary);
+        }
+
+        .delete-button {
+            border: none;
+            background: #FFF0EF;
+            color: var(--red);
+            border-radius: 8px;
+            padding: 9px 10px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 45px 15px;
+            color: var(--muted);
+            border: 1px dashed #DCD7EA;
+            border-radius: 12px;
+        }
+
+        .empty-state span {
+            display: block;
+            font-size: 34px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            color: var(--dark);
+            font-size: 15px;
+            margin-bottom: 7px;
+        }
+
+        .empty-state p {
+            font-size: 12px;
+        }
+
+        .habit-note {
+            margin-top: 20px;
+            padding: 16px;
+            background: #F0ECFA;
+            border-radius: 11px;
+            color: var(--dark);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 1100px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 750px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 23px 16px;
+            }
+
+            .topbar h1 {
+                font-size: 23px;
+            }
+
+            .stats {
+                gap: 9px;
+            }
+
+            .stat {
+                padding: 14px;
+            }
+
+            .stat h3 {
+                font-size: 22px;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .habit-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .habit-actions {
+                align-self: flex-end;
+            }
+
+            .list-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <a href="dashboard.html" class="logo">NovaFokus.</a>
+
+        <p class="menu-label">ESPACIO PERSONAL</p>
+
+        <nav class="menu">
+            <a href="dashboard.html"><span class="menu-icon">⌂</span>Inicio</a>
+            <a href="metas.html"><span class="menu-icon">◎</span>Mis metas</a>
+            <a href="habitos.html" class="active"><span class="menu-icon">✓</span>Mis hábitos</a>
+            <a href="rutinas.html"><span class="menu-icon">▦</span>Rutinas</a>
+            <a href="enfoque.html"><span class="menu-icon">◷</span>Sesiones de enfoque</a>
+            <a href="progreso.html"><span class="menu-icon">↗</span>Mi progreso</a>
+            <a href="bienestar.html"><span class="menu-icon">♡</span>Bienestar</a>
+            <a href="ia.html"><span class="menu-icon">✧</span>NovaFokus AI</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <nav class="menu">
+                <a href="index.html"><span class="menu-icon">↩</span>Salir</a>
+            </nav>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <h1>Mis hábitos</h1>
+                <p>Pequeñas acciones que construyen grandes cambios.</p>
+            </div>
+
+            <a href="dashboard.html" class="back-link">← Volver al panel</a>
+        </header>
+
+        <section class="intro-card">
+            <h2>La constancia se construye día a día.</h2>
+            <p>
+                Registra las acciones que quieres convertir en parte de tu vida.
+                No busques la perfección: avanza a tu propio ritmo.
+            </p>
+        </section>
+
+        <section class="stats">
+
+            <article class="stat">
+                <span>Hábitos registrados</span>
+                <h3 id="habitos-total">0</h3>
+            </article>
+
+            <article class="stat">
+                <span>Completados hoy</span>
+                <h3 id="habitos-completados">0</h3>
+            </article>
+
+            <article class="stat">
+                <span>Pendientes hoy</span>
+                <h3 id="habitos-pendientes">0</h3>
+            </article>
+
+            <article class="stat">
+                <span>Constancia de hoy</span>
+                <h3 id="habitos-porcentaje">0%</h3>
+            </article>
+
+        </section>
+
+        <section class="workspace">
+
+            <!-- FORMULARIO -->
+            <article class="panel">
+
+                <h2>Crear un hábito</h2>
+                <p class="panel-description">
+                    Elige una acción pequeña que quieras repetir con frecuencia.
+                </p>
+
+                <form id="formulario-habito">
+
+                    <div class="form-group">
+                        <label for="nombre-habito">Nombre del hábito</label>
+                        <input
+                            type="text"
+                            id="nombre-habito"
+                            placeholder="Ej. Leer durante 15 minutos"
+                            maxlength="80"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoria-habito">Categoría</label>
+                        <select id="categoria-habito" required>
+                            <option value="">Selecciona una categoría</option>
+                            <option value="Estudio">Estudio</option>
+                            <option value="Salud y bienestar">Salud y bienestar</option>
+                            <option value="Organización">Organización</option>
+                            <option value="Desarrollo personal">Desarrollo personal</option>
+                            <option value="Actividad física">Actividad física</option>
+                            <option value="Otra">Otra</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="frecuencia-habito">Frecuencia</label>
+                        <select id="frecuencia-habito" required>
+                            <option value="Diario">Todos los días</option>
+                            <option value="Entre semana">Entre semana</option>
+                            <option value="Semanal">Una vez por semana</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="primary-button">
+                        + Agregar hábito
+                    </button>
+
+                    <p class="message" id="mensaje-habito" aria-live="polite"></p>
+
+                </form>
+
+                <div class="habit-note">
+                    <strong>Un consejo:</strong>
+                    comienza con hábitos sencillos y realistas.
+                    La constancia importa más que hacerlo todo de una vez.
+                </div>
+
+            </article>
+
+            <!-- LISTA DE HÁBITOS -->
+            <article class="panel">
+
+                <div class="list-header">
+                    <h2>Mi seguimiento diario</h2>
+
+                    <select id="filtro-habitos" class="filter">
+                        <option value="todos">Todos los hábitos</option>
+                        <option value="pendientes">Pendientes</option>
+                        <option value="completados">Completados hoy</option>
+                    </select>
+                </div>
+
+                <div class="habit-list" id="lista-habitos"></div>
+
+                <div class="empty-state" id="habitos-vacios">
+                    <span>✓</span>
+                    <h3>Aún no tienes hábitos</h3>
+                    <p>Agrega tu primer hábito y empieza a construir constancia.</p>
+                </div>
+
+            </article>
+
+        </section>
+
+    </main>
+
+    <script>
+        const formulario = document.getElementById('formulario-habito');
+        const lista = document.getElementById('lista-habitos');
+        const mensaje = document.getElementById('mensaje-habito');
+        const filtro = document.getElementById('filtro-habitos');
+
+        const campoNombre = document.getElementById('nombre-habito');
+        const campoCategoria = document.getElementById('categoria-habito');
+        const campoFrecuencia = document.getElementById('frecuencia-habito');
+
+        const CLAVE_HABITOS = 'novafokus_habitos';
+
+        const hoy = new Date().toLocaleDateString('en-CA');
+
+        let habitos = [];
+
+        try {
+            const guardados = JSON.parse(
+                localStorage.getItem(CLAVE_HABITOS) || '[]'
+            );
+
+            habitos = Array.isArray(guardados) ? guardados : [];
+        } catch (error) {
+            habitos = [];
+        }
+
+        // Iconos según la categoría
+        function obtenerIcono(categoria) {
+            const iconos = {
+                'Estudio': '📚',
+                'Salud y bienestar': '♡',
+                'Organización': '▦',
+                'Desarrollo personal': '✧',
+                'Actividad física': '⚡',
+                'Otra': '✓'
+            };
+
+            return iconos[categoria] || '✓';
+        }
+
+        function guardarHabitos() {
+            localStorage.setItem(
+                CLAVE_HABITOS,
+                JSON.stringify(habitos)
+            );
+        }
+
+        function actualizarResumen() {
+            const completados = habitos.filter(
+                habito => habito.ultimoRegistro === hoy
+            ).length;
+
+            const pendientes = habitos.length - completados;
+
+            const porcentaje = habitos.length
+                ? Math.round((completados / habitos.length) * 100)
+                : 0;
+
+            document.getElementById('habitos-total').textContent =
+                habitos.length;
+
+            document.getElementById('habitos-completados').textContent =
+                completados;
+
+            document.getElementById('habitos-pendientes').textContent =
+                pendientes;
+
+            document.getElementById('habitos-porcentaje').textContent =
+                porcentaje + '%';
+        }
+
+        function crearTarjeta(habito) {
+            const completado = habito.ultimoRegistro === hoy;
+
+            const tarjeta = document.createElement('article');
+            tarjeta.className = 'habit-card';
+
+            const principal = document.createElement('div');
+            principal.className = 'habit-main';
+
+            const icono = document.createElement('div');
+            icono.className = 'habit-icon';
+            icono.textContent = obtenerIcono(habito.categoria);
+
+            const informacion = document.createElement('div');
+            informacion.className = 'habit-info';
+
+            const titulo = document.createElement('h3');
+            titulo.textContent = habito.nombre;
+
+            const detalle = document.createElement('p');
+            detalle.textContent =
+                habito.categoria + ' · ' + habito.frecuencia;
+
+            const estado = document.createElement('p');
+            estado.textContent = completado
+                ? 'Completado hoy'
+                : 'Pendiente de hoy';
+
+            informacion.appendChild(titulo);
+            informacion.appendChild(detalle);
+            informacion.appendChild(estado);
+
+            principal.appendChild(icono);
+            principal.appendChild(informacion);
+
+            const acciones = document.createElement('div');
+            acciones.className = 'habit-actions';
+
+            const botonCompletar = document.createElement('button');
+            botonCompletar.type = 'button';
+            botonCompletar.className =
+                'check-button' + (completado ? ' done' : '');
+
+            botonCompletar.textContent =
+                completado ? '✓ Completado' : 'Marcar hecho';
+
+            botonCompletar.addEventListener('click', function() {
+                habito.ultimoRegistro = completado ? '' : hoy;
+
+                guardarHabitos();
+                renderizarHabitos();
+            });
+
+            const botonEliminar = document.createElement('button');
+            botonEliminar.type = 'button';
+            botonEliminar.className = 'delete-button';
+            botonEliminar.textContent = 'Eliminar';
+
+            botonEliminar.addEventListener('click', function() {
+                habitos = habitos.filter(
+                    item => item.id !== habito.id
+                );
+
+                guardarHabitos();
+                renderizarHabitos();
+            });
+
+            acciones.appendChild(botonCompletar);
+            acciones.appendChild(botonEliminar);
+
+            tarjeta.appendChild(principal);
+            tarjeta.appendChild(acciones);
+
+            return tarjeta;
+        }
+
+        function renderizarHabitos() {
+            lista.replaceChildren();
+
+            const seleccion = filtro.value;
+
+            const visibles = habitos.filter(habito => {
+                const completado = habito.ultimoRegistro === hoy;
+
+                if (seleccion === 'pendientes') return !completado;
+                if (seleccion === 'completados') return completado;
+
+                return true;
+            });
+
+            visibles.forEach(habito => {
+                lista.appendChild(crearTarjeta(habito));
+            });
+
+            document.getElementById('habitos-vacios').style.display =
+                habitos.length === 0 ? 'block' : 'none';
+
+            if (habitos.length > 0 && visibles.length === 0) {
+                const aviso = document.createElement('p');
+                aviso.className = 'panel-description';
+                aviso.textContent =
+                    'No hay hábitos en esta categoría de seguimiento.';
+                lista.appendChild(aviso);
+            }
+
+            actualizarResumen();
+        }
+
+        formulario.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const nombre = campoNombre.value.trim();
+
+            if (!nombre) {
+                mensaje.style.color = '#B42318';
+                mensaje.textContent = 'Escribe el nombre de tu hábito.';
+                return;
+            }
+
+            const nuevoHabito = {
+                id: Date.now().toString() +
+                    Math.random().toString(16).slice(2),
+                nombre: nombre,
+                categoria: campoCategoria.value,
+                frecuencia: campoFrecuencia.value,
+                ultimoRegistro: ''
+            };
+
+            habitos.push(nuevoHabito);
+
+            guardarHabitos();
+            formulario.reset();
+
+            mensaje.style.color = '#16803C';
+            mensaje.textContent = '¡Tu hábito se agregó correctamente!';
+
+            renderizarHabitos();
+        });
+
+        filtro.addEventListener('change', renderizarHabitos);
+
+        renderizarHabitos();
+    </script>
+
+</body>
+</html>

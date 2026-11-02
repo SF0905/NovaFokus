@@ -1,0 +1,311 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Inicia sesión en NovaFokus y continúa construyendo tu grandeza.">
+    <title>Iniciar sesión | NovaFokus</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --primary: #492C99;
+            --dark: #281270;
+            --blue: #224E94;
+            --text: #25213A;
+            --muted: #77738A;
+            --background: #F7F6FC;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8%;
+            background: var(--white);
+            border-bottom: 1px solid #ECEAF3;
+        }
+
+        .logo {
+            color: var(--primary);
+            font-size: 25px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .back-link {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        .main-container {
+            min-height: calc(100vh - 78px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 45px 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 460px;
+            background: var(--white);
+            padding: 45px;
+            border-radius: 22px;
+            box-shadow: 0 12px 45px rgba(40, 18, 112, 0.08);
+        }
+
+        .welcome {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .welcome-icon {
+            width: 62px;
+            height: 62px;
+            margin: 0 auto 20px;
+            border-radius: 18px;
+            background: #EEE9FA;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .welcome h1 {
+            font-size: 29px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .welcome p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 9px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #E1DEEB;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(73, 44, 153, 0.10);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin: 5px 0 25px;
+            font-size: 13px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--muted);
+        }
+
+        .form-options a,
+        .register-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 11px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .login-button:hover {
+            background: var(--dark);
+            transform: translateY(-2px);
+        }
+
+        .message {
+            margin-top: 15px;
+            font-size: 13px;
+            text-align: center;
+            color: #B42318;
+            min-height: 18px;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 27px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .security-note {
+            text-align: center;
+            margin-top: 25px;
+            color: #9994A9;
+            font-size: 12px;
+        }
+
+        @media (max-width: 500px) {
+            .navbar {
+                padding: 0 6%;
+            }
+
+            .login-card {
+                padding: 32px 23px;
+            }
+
+            .welcome h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <a href="index.html" class="logo">NovaFokus.</a>
+        <a href="index.html" class="back-link">← Volver al inicio</a>
+    </header>
+
+    <main class="main-container">
+        <section class="login-card">
+
+            <div class="welcome">
+                <div class="welcome-icon">N</div>
+                <h1>¡Qué bueno tenerte de vuelta!</h1>
+                <p>Inicia sesión y continúa construyendo la mejor versión de ti.</p>
+            </div>
+
+            <form id="login-form">
+
+                <div class="form-group">
+                    <label for="correo">Correo electrónico</label>
+                    <input
+                        type="email"
+                        id="correo"
+                        name="correo"
+                        placeholder="ejemplo@correo.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="contrasena">Contraseña</label>
+                    <input
+                        type="password"
+                        id="contrasena"
+                        name="contrasena"
+                        placeholder="Ingresa tu contraseña"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <div class="form-options">
+                    <label class="remember">
+                        <input type="checkbox" id="recordarme">
+                        Recordarme
+                    </label>
+
+                    <a href="#" id="recuperar">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <button type="submit" class="login-button">
+                    Iniciar sesión
+                </button>
+
+                <p class="message" id="mensaje"></p>
+
+            </form>
+
+            <div class="register-link">
+                ¿Todavía no tienes una cuenta?
+                <a href="registro.html">Crear cuenta</a>
+            </div>
+
+            <p class="security-note">
+                Tu crecimiento comienza con una decisión.
+            </p>
+
+        </section>
+    </main>
+
+    <script>
+        const formulario = document.getElementById('login-form');
+        const mensaje = document.getElementById('mensaje');
+
+        formulario.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            mensaje.style.color = '#B42318';
+            mensaje.textContent =
+                'El inicio de sesión estará disponible cuando conectemos el sistema de usuarios.';
+        });
+
+        document.getElementById('recuperar').addEventListener('click', function(event) {
+            event.preventDefault();
+            mensaje.style.color = '#492C99';
+            mensaje.textContent =
+                'La recuperación de contraseña estará disponible próximamente.';
+        });
+    </script>
+
+</body>
+</html>

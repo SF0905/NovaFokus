@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaFokus AI | Tu asistente personal</title>
+
+    <style>
+        :root {
+            --primary: #492C99;
+            --dark: #281270;
+            --background: #f6f5fb;
+            --white: #fff;
+            --text: #25213a;
+            --muted: #77738a;
+            --border: #e9e6f1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 245px;
+            background: var(--dark);
+            color: white;
+            padding: 30px 18px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            margin: 0 10px 38px;
+        }
+
+        .logo span {
+            color: #b9a6ff;
+        }
+
+        .nav-title {
+            color: #bdb2e5;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 0 12px 13px;
+        }
+
+        .nav-links {
+            display: grid;
+            gap: 7px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #e5defa;
+            padding: 12px;
+            border-radius: 9px;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        .sidebar-bottom a {
+            display: block;
+            color: #e5defa;
+            text-decoration: none;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            margin-bottom: 25px;
+        }
+
+        .topbar h1 {
+            font-size: 29px;
+            color: var(--dark);
+            margin-bottom: 7px;
+        }
+
+        .topbar p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .ai-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 270px;
+            gap: 20px;
+            flex: 1;
+            min-height: 550px;
+        }
+
+        .chat-panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            min-height: 550px;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 19px 22px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ai-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: #eee9ff;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .chat-header h2 {
+            font-size: 15px;
+            color: var(--dark);
+            margin-bottom: 4px;
+        }
+
+        .chat-header p {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 23px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
+            min-height: 300px;
+        }
+
+        .message {
+            max-width: 82%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.65;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .message.assistant {
+            align-self: flex-start;
+            background: #f1edff;
+            color: var(--dark);
+            border-bottom-left-radius: 3px;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 3px;
+        }
+
+        .chat-input-area {
+            border-top: 1px solid var(--border);
+            padding: 17px;
+        }
+
+        .chat-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-form textarea {
+            flex: 1;
+            min-width: 0;
+            resize: none;
+            height: 48px;
+            max-height: 110px;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            outline: none;
+            font: inherit;
+            font-size: 13px;
+        }
+
+        .chat-form textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .send-btn {
+            border: none;
+            background: var(--primary);
+            color: white;
+            border-radius: 9px;
+            padding: 0 19px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .send-btn:hover {
+            background: var(--dark);
+        }
+
+        .input-note {
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 9px;
+        }
+
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .info-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            padding: 19px;
+        }
+
+        .info-card h3 {
+            font-size: 15px;
+            color: var(--dark);
+            margin-bottom: 12px;
+        }
+
+        .info-card p {
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--muted);
+        }
+
+        .suggestion-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            border: 1px solid var(--border);
+            background: white;
+            padding: 12px;
+            border-radius: 9px;
+            margin-top: 9px;
+            font-size: 12px;
+            color: var(--text);
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .suggestion-btn:hover {
+            border-color: var(--primary);
+            background: #f7f4ff;
+            color: var(--primary);
+        }
+
+        .clear-btn {
+            border: none;
+            background: transparent;
+            color: var(--primary);
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 13px;
+        }
+
+        @media (max-width: 950px) {
+            .ai-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .side-panel {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 18px;
+            }
+
+            .logo {
+                margin: 0 0 18px;
+            }
+
+            .nav-links {
+                display: flex;
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+
+            .nav-links a {
+                white-space: nowrap;
+                font-size: 12px;
+            }
+
+            .nav-title,
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .main {
+                padding: 22px 15px;
+            }
+
+            .chat-panel {
+                min-height: 520px;
+            }
+
+            .side-panel {
+                display: flex;
+            }
+
+            .chat-form {
+                gap: 7px;
+            }
+
+            .send-btn {
+                padding: 0 13px;
+            }
+
+            .message {
+                max-width: 92%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="logo">Nova<span>Fokus</span></div>
+
+        <p class="nav-title">Menú principal</p>
+
+        <nav class="nav-links">
+            <a href="dashboard.html">Inicio</a>
+            <a href="metas.html">Mis metas</a>
+            <a href="habitos.html">Mis hábitos</a>
+            <a href="rutinas.html">Mis rutinas</a>
+            <a href="enfoque.html">Enfoque</a>
+            <a href="progreso.html">Mi progreso</a>
+            <a href="bienestar.html">Bienestar</a>
+            <a href="ia.html" class="active">NovaFokus AI</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="index.html">← Volver al inicio</a>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <h1>NovaFokus AI</h1>
+            <p>Una herramienta para acompañarte en tu crecimiento personal y académico.</p>
+        </header>
+
+        <div class="ai-layout">
+
+            <section class="chat-panel">
+
+                <div class="chat-header">
+                    <div class="ai-avatar">N</div>
+                    <div>
+                        <h2>Asistente NovaFokus</h2>
+                        <p>Orientación para tus metas, hábitos y estudio</p>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chat-messages" aria-live="polite">
+                    <div class="message assistant">
+                        ¡Hola! Soy el asistente de NovaFokus.
+
+                        Puedo ayudarte a organizar tus actividades, planear sesiones de estudio, crear hábitos y dividir tus objetivos en pasos pequeños.
+
+                        ¿Qué te gustaría trabajar hoy?
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <form class="chat-form" id="chat-form">
+                        <textarea
+                            id="user-input"
+                            placeholder="Escribe tu pregunta..."
+                            maxlength="500"
+                            aria-label="Escribe tu pregunta"
+                            required
+                        ></textarea>
+
+                        <button class="send-btn" type="submit">
+                            Enviar
+                        </button>
+                    </form>
+
+                    <p class="input-note">
+                        Evita compartir contraseñas, datos personales o información privada.
+                    </p>
+                </div>
+
+            </section>
+
+            <aside class="side-panel">
+
+                <section class="info-card">
+                    <h3>¿En qué puedo ayudarte?</h3>
+
+                    <button class="suggestion-btn" data-question="Ayúdame a organizar mi semana de estudio.">
+                        Organizar mi semana
+                    </button>
+
+                    <button class="suggestion-btn" data-question="Quiero crear un hábito nuevo. ¿Cómo puedo empezar?">
+                        Crear un hábito
+                    </button>
+
+                    <button class="suggestion-btn" data-question="Ayúdame a dividir una meta grande en pasos pequeños.">
+                        Planear una meta
+                    </button>
+
+                    <button class="suggestion-btn" data-question="Dame algunos consejos para concentrarme al estudiar.">
+                        Mejorar mi concentración
+                    </button>
+                </section>
+
+                <section class="info-card">
+                    <h3>Sobre NovaFokus AI</h3>
+                    <p>
+                        Esta primera versión utiliza respuestas guiadas de demostración.
+                        Más adelante conectaremos un servicio de inteligencia artificial
+                        mediante el backend para ofrecer conversaciones personalizadas.
+                    </p>
+
+                    <button class="clear-btn" id="clear-chat">
+                        Limpiar conversación
+                    </button>
+                </section>
+
+            </aside>
+        </div>
+    </main>
+</div>
+
+<script>
+    const formulario = document.getElementById("chat-form");
+    const entrada = document.getElementById("user-input");
+    const mensajes = document.getElementById("chat-messages");
+
+    function agregarMensaje(texto, tipo) {
+        const elemento = document.createElement("div");
+        elemento.className = `message ${tipo}`;
+        elemento.textContent = texto;
+
+        mensajes.appendChild(elemento);
+        mensajes.scrollTop = mensajes.scrollHeight;
+    }
+
+    function obtenerRespuesta(pregunta) {
+        const texto = pregunta.toLowerCase();
+
+        if (
+            texto.includes("semana") ||
+            texto.includes("organizar") ||
+            texto.includes("horario")
+        ) {
+            return "Para organizar tu semana, empieza por identificar tus compromisos principales. Después:\n\n1. Anota tus actividades importantes.\n2. Divide las tareas grandes en partes pequeñas.\n3. Reserva tiempos de descanso.\n4. Elige tres prioridades para cada día.\n\n¿Quieres que organicemos juntos un plan semanal?";
+        }
+
+        if (
+            texto.includes("hábito") ||
+            texto.includes("habito") ||
+            texto.includes("constancia")
+        ) {
+            return "Para construir un hábito, comienza con una acción sencilla y realista.\n\n1. Elige algo que quieras incorporar.\n2. Define cuándo puedes hacerlo.\n3. Empieza con una duración pequeña.\n4. Registra tus avances sin exigirte perfección.\n\nLa constancia se construye poco a poco.";
+        }
+
+        if (
+            texto.includes("meta") ||
+            texto.includes("objetivo")
+        ) {
+            return "Podemos convertir una meta grande en un plan más manejable.\n\n1. Escribe exactamente qué quieres conseguir.\n2. Define por qué es importante para ti.\n3. Divide el objetivo en pequeños pasos.\n4. Establece una fecha flexible para revisar tu avance.\n\n¿Qué meta te gustaría planear?";
+        }
+
+        if (
+            texto.includes("estudi") ||
+            texto.includes("concentr") ||
+            texto.includes("pomodoro")
+        ) {
+            return "Prueba una sesión de estudio organizada:\n\n1. Elige un solo tema.\n2. Prepara tus materiales.\n3. Silencia las distracciones.\n4. Estudia durante un periodo que te resulte cómodo.\n5. Haz una pausa y revisa lo aprendido.\n\nPuedes utilizar el espacio de Enfoque de NovaFokus para acompañar tus sesiones.";
+        }
+
+        if (
+            texto.includes("cans") ||
+            texto.includes("estrés") ||
+            texto.includes("estres") ||
+            texto.includes("triste")
+        ) {
+            return "Gracias por compartirlo. No tienes que resolverlo todo de una vez. Puedes hacer una pausa, reconocer lo que estás sintiendo y hablar con alguien de confianza si necesitas apoyo. Si esta situación te está afectando mucho o continúa, considera buscar acompañamiento de un profesional.";
+        }
+
+        if (
+            texto.includes("hola") ||
+            texto.includes("buenos días") ||
+            texto.includes("buenas")
+        ) {
+            return "¡Hola! Qué bueno tenerte por aquí. ¿En qué objetivo, hábito o actividad te gustaría avanzar hoy?";
+        }
+
+        return "Puedo ayudarte a organizar metas, hábitos, rutinas y actividades de estudio. Para darte una orientación más útil, cuéntame qué quieres conseguir y qué parte te está resultando difícil.";
+    }
+
+    function enviarPregunta(pregunta) {
+        const texto = pregunta.trim();
+
+        if (!texto) return;
+
+        agregarMensaje(texto, "user");
+
+        const respuesta = obtenerRespuesta(texto);
+
+        agregarMensaje(respuesta, "assistant");
+    }
+
+    formulario.addEventListener("submit", function(evento) {
+        evento.preventDefault();
+
+        enviarPregunta(entrada.value);
+        entrada.value = "";
+        entrada.focus();
+    });
+
+    document.querySelectorAll(".suggestion-btn").forEach(boton => {
+        boton.addEventListener("click", () => {
+            enviarPregunta(boton.dataset.question);
+        });
+    });
+
+    document.getElementById("clear-chat").addEventListener("click", () => {
+        mensajes.innerHTML = `
+            <div class="message assistant">
+                ¡Hola! Soy el asistente de NovaFokus.
+
+                Puedo ayudarte a organizar tus actividades, planear sesiones de estudio, crear hábitos y dividir tus objetivos en pasos pequeños.
+
+                ¿Qué te gustaría trabajar hoy?
+            </div>
+        `;
+    });
+
+    entrada.addEventListener("keydown", function(evento) {
+        if (evento.key === "Enter" && !evento.shiftKey) {
+            evento.preventDefault();
+            formulario.requestSubmit();
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienestar | NovaFokus</title>
+
+    <style>
+        :root {
+            --primary: #492C99;
+            --dark: #281270;
+            --background: #f6f5fb;
+            --white: #fff;
+            --text: #25213a;
+            --muted: #77738a;
+            --border: #e9e6f1;
+            --green: #23865b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 245px;
+            background: var(--dark);
+            color: white;
+            padding: 30px 18px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            margin: 0 10px 38px;
+        }
+
+        .logo span {
+            color: #b9a6ff;
+        }
+
+        .nav-title {
+            color: #bdb2e5;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 0 12px 13px;
+        }
+
+        .nav-links {
+            display: grid;
+            gap: 7px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #e5defa;
+            padding: 12px;
+            border-radius: 9px;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        .sidebar-bottom a {
+            display: block;
+            color: #e5defa;
+            text-decoration: none;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 35px;
+        }
+
+        .topbar {
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+            color: var(--dark);
+            font-size: 29px;
+            margin-bottom: 7px;
+        }
+
+        .topbar p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .welcome {
+            background: linear-gradient(120deg, #492C99, #224E94);
+            color: white;
+            padding: 27px;
+            border-radius: 15px;
+            margin-bottom: 22px;
+        }
+
+        .welcome h2 {
+            font-size: 20px;
+            margin-bottom: 9px;
+        }
+
+        .welcome p {
+            font-size: 13px;
+            line-height: 1.6;
+            max-width: 650px;
+            color: #eeeaff;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .panel h2 {
+            color: var(--dark);
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .mood-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .mood-option input {
+            display: none;
+        }
+
+        .mood-option span {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 15px 7px;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            cursor: pointer;
+            font-size: 12px;
+            color: var(--muted);
+            transition: .2s;
+            min-height: 90px;
+        }
+
+        .mood-option .emoji {
+            font-size: 25px;
+        }
+
+        .mood-option input:checked + span {
+            background: #f0ebff;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            min-height: 90px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            resize: vertical;
+            outline: none;
+            font: inherit;
+            font-size: 13px;
+        }
+
+        .form-group textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .primary-btn {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 13px;
+            border-radius: 9px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .primary-btn:hover {
+            background: var(--dark);
+        }
+
+        .suggestion {
+            background: #f1edff;
+            border-radius: 11px;
+            padding: 18px;
+            color: var(--dark);
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 17px;
+        }
+
+        .suggestion strong {
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        .history-list {
+            display: grid;
+            gap: 11px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 11px;
+            font-size: 13px;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .history-item span:last-child {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .empty {
+            text-align: center;
+            color: var(--muted);
+            padding: 18px 5px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .notice {
+            background: #f5f4f8;
+            color: #5e5870;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 900px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 18px;
+            }
+
+            .logo {
+                margin: 0 0 18px;
+            }
+
+            .nav-links {
+                display: flex;
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+
+            .nav-links a {
+                white-space: nowrap;
+                font-size: 12px;
+            }
+
+            .nav-title,
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .main {
+                padding: 22px 15px;
+            }
+
+            .panel {
+                padding: 18px;
+            }
+
+            .mood-options {
+                gap: 7px;
+            }
+
+            .mood-option span {
+                min-height: 80px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="logo">Nova<span>Fokus</span></div>
+
+        <p class="nav-title">Menú principal</p>
+
+        <nav class="nav-links">
+            <a href="dashboard.html">Inicio</a>
+            <a href="metas.html">Mis metas</a>
+            <a href="habitos.html">Mis hábitos</a>
+            <a href="rutinas.html">Mis rutinas</a>
+            <a href="enfoque.html">Enfoque</a>
+            <a href="progreso.html">Mi progreso</a>
+            <a href="bienestar.html" class="active">Bienestar</a>
+            <a href="ia.html">NovaFokus AI</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="index.html">← Volver al inicio</a>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <h1>Mi bienestar</h1>
+            <p>Un espacio para reconocer cómo te sientes y cuidar de ti.</p>
+        </header>
+
+        <section class="welcome">
+            <h2>Tu bienestar también es progreso.</h2>
+            <p>
+                No todos los días son iguales. Aquí puedes hacer una pausa,
+                reconocer tus emociones y recordar que avanzar también significa
+                escucharte y respetar tus necesidades.
+            </p>
+        </section>
+
+        <div class="content-grid">
+
+            <div>
+                <section class="panel">
+                    <h2>¿Cómo te sientes hoy?</h2>
+                    <p class="description">
+                        Elige la opción que mejor represente cómo te encuentras.
+                        No hay respuestas buenas ni malas.
+                    </p>
+
+                    <form id="formulario-bienestar">
+
+                        <div class="mood-options">
+
+                            <label class="mood-option">
+                                <input type="radio" name="estado" value="Feliz" required>
+                                <span>
+                                    <span class="emoji">😊</span>
+                                    Feliz
+                                </span>
+                            </label>
+
+                            <label class="mood-option">
+                                <input type="radio" name="estado" value="Tranquilo">
+                                <span>
+                                    <span class="emoji">😌</span>
+                                    Tranquilo/a
+                                </span>
+                            </label>
+
+                            <label class="mood-option">
+                                <input type="radio" name="estado" value="Neutral">
+                                <span>
+                                    <span class="emoji">😐</span>
+                                    Neutral
+                                </span>
+                            </label>
+
+                            <label class="mood-option">
+                                <input type="radio" name="estado" value="Cansado">
+                                <span>
+                                    <span class="emoji">😴</span>
+                                    Cansado/a
+                                </span>
+                            </label>
+
+                            <label class="mood-option">
+                                <input type="radio" name="estado" value="Frustrado">
+                                <span>
+                                    <span class="emoji">😣</span>
+                                    Frustrado/a
+                                </span>
+                            </label>
+
+                            <label class="mood-option">
+                                <input type="radio" name="estado" value="Triste">
+                                <span>
+                                    <span class="emoji">😔</span>
+                                    Triste
+                                </span>
+                            </label>
+
+                            <label class="mood-option">
+                                <input type="radio" name="estado" value="Enojado">
+                                <span>
+                                    <span class="emoji">😠</span>
+                                    Enojado/a
+                                </span>
+                            </label>
+
+                            <label class="mood-option">
+                                <input type="radio" name="estado" value="Ansioso">
+                                <span>
+                                    <span class="emoji">😟</span>
+                                    Preocupado/a
+                                </span>
+                            </label>
+
+                            <label class="mood-option">
+                                <input type="radio" name="estado" value="Motivado">
+                                <span>
+                                    <span class="emoji">✨</span>
+                                    Motivado/a
+                                </span>
+                            </label>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nota">¿Quieres contar algo sobre tu día? (opcional)</label>
+                            <textarea
+                                id="nota"
+                                maxlength="300"
+                                placeholder="Escribe lo que quieras recordar de hoy..."
+                            ></textarea>
+                        </div>
+
+                        <button type="submit" class="primary-btn">
+                            Guardar registro
+                        </button>
+                    </form>
+                </section>
+
+                <section class="panel">
+                    <h2>Mi historial</h2>
+                    <p class="description">
+                        Consulta los estados que has registrado recientemente.
+                    </p>
+
+                    <div class="history-list" id="historial">
+                        <div class="empty">
+                            Todavía no tienes registros. Cuando guardes el primero,
+                            aparecerá aquí.
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div>
+                <section class="panel">
+                    <h2>Una sugerencia para ti</h2>
+                    <p class="description">
+                        Una pequeña idea para acompañarte hoy.
+                    </p>
+
+                    <div class="suggestion" id="sugerencia">
+                        <strong>Empieza por escucharte.</strong>
+                        Date unos minutos para reconocer cómo te sientes.
+                        No tienes que resolverlo todo hoy.
+                    </div>
+
+                    <div class="notice">
+                        NovaFokus ofrece sugerencias generales de bienestar.
+                        No realiza diagnósticos ni sustituye el acompañamiento
+                        de profesionales de la salud.
+                    </div>
+                </section>
+
+                <section class="panel">
+                    <h2>Un recordatorio importante</h2>
+                    <p class="description">
+                        Tu valor no depende de cuántas tareas completes ni de
+                        cuánto avances en un solo día.
+                    </p>
+
+                    <div class="suggestion">
+                        Descansar, pedir apoyo y cambiar tus planes cuando lo
+                        necesitas también son formas de cuidarte.
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<script>
+    const formulario = document.getElementById("formulario-bienestar");
+    const historial = document.getElementById("historial");
+    const sugerencia = document.getElementById("sugerencia");
+
+    function leerRegistros() {
+        try {
+            const datos = JSON.parse(
+                localStorage.getItem("novafokus_bienestar")
+            );
+
+            return Array.isArray(datos) ? datos : [];
+        } catch {
+            return [];
+        }
+    }
+
+    let registros = leerRegistros();
+
+    const recomendaciones = {
+        Feliz: "Qué bueno que estés teniendo un momento positivo. Puedes reconocer qué cosas han contribuido a que te sientas así.",
+        Tranquilo: "Aprovecha este momento para hacer tus actividades con calma y mantener un ritmo que te resulte cómodo.",
+        Neutral: "No necesitas sentir algo extraordinario todo el tiempo. Puedes continuar con tu día paso a paso.",
+        Cansado: "Quizás sea buen momento para hacer una pausa, hidratarte y revisar si necesitas descansar.",
+        Frustrado: "Puedes tomar distancia por un momento, respirar con calma y retomar una actividad cuando te sientas preparado.",
+        Triste: "Date permiso de reconocer cómo te sientes. Hablar con alguien de confianza puede ayudarte a sentirte acompañado.",
+        Enojado: "Intenta darte un momento antes de responder o tomar decisiones. Puedes volver a la situación cuando estés más tranquilo.",
+        Ansioso: "Concéntrate en una sola actividad pequeña. Si la preocupación continúa, compartirla con alguien de confianza puede ser útil.",
+        Motivado: "Aprovecha esa motivación para elegir una acción concreta y realista. No necesitas hacerlo todo de una vez."
+    };
+
+    function obtenerFecha() {
+        const fecha = new Date();
+
+        return [
+            fecha.getFullYear(),
+            String(fecha.getMonth() + 1).padStart(2, "0"),
+            String(fecha.getDate()).padStart(2, "0")
+        ].join("-");
+    }
+
+    function mostrarSugerencia(estado) {
+        const texto = recomendaciones[estado] ||
+            "Tómate un momento para reconocer cómo te sientes.";
+
+        sugerencia.innerHTML = "";
+
+        const titulo = document.createElement("strong");
+        titulo.textContent = "Una idea para acompañarte:";
+
+        const contenido = document.createElement("span");
+        contenido.textContent = texto;
+
+        sugerencia.append(titulo, contenido);
+    }
+
+    function mostrarHistorial() {
+        historial.innerHTML = "";
+
+        if (registros.length === 0) {
+            historial.innerHTML = `
+                <div class="empty">
+                    Todavía no tienes registros. Cuando guardes el primero,
+                    aparecerá aquí.
+                </div>
+            `;
+            return;
+        }
+
+        registros.slice(0, 7).forEach(registro => {
+            const elemento = document.createElement("div");
+            elemento.className = "history-item";
+
+            const estado = document.createElement("strong");
+            estado.textContent = registro.estado;
+
+            const fecha = document.createElement("span");
+            fecha.textContent = registro.fecha;
+
+            elemento.append(estado, fecha);
+            historial.appendChild(elemento);
+        });
+    }
+
+    formulario.addEventListener("submit", function(evento) {
+        evento.preventDefault();
+
+        const seleccionado = document.querySelector(
+            'input[name="estado"]:checked'
+        );
+
+        if (!seleccionado) {
+            alert("Selecciona cómo te sientes hoy.");
+            return;
+        }
+
+        const estado = seleccionado.value;
+        const nota = document.getElementById("nota").value.trim();
+        const hoy = obtenerFecha();
+
+        registros = registros.filter(registro => registro.dia !== hoy);
+
+        registros.unshift({
+            id: Date.now(),
+            estado,
+            nota,
+            dia: hoy,
+            fecha: new Date().toLocaleDateString("es-CO")
+        });
+
+        localStorage.setItem(
+            "novafokus_bienestar",
+            JSON.stringify(registros)
+        );
+
+        mostrarSugerencia(estado);
+        mostrarHistorial();
+
+        formulario.reset();
+
+        alert("Tu registro de bienestar se guardó correctamente.");
+    });
+
+    mostrarHistorial();
+
+    if (registros.length > 0) {
+        mostrarSugerencia(registros[0].estado);
+    }
+</script>
+
+</body>
+</html>

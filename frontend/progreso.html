@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi progreso | NovaFokus</title>
+
+    <style>
+        :root {
+            --primary: #492C99;
+            --dark: #281270;
+            --background: #f6f5fb;
+            --white: #fff;
+            --text: #25213a;
+            --muted: #77738a;
+            --border: #e9e6f1;
+            --green: #23865b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 245px;
+            background: var(--dark);
+            color: white;
+            padding: 30px 18px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            margin: 0 10px 38px;
+        }
+
+        .logo span {
+            color: #b9a6ff;
+        }
+
+        .nav-title {
+            color: #bdb2e5;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 0 12px 13px;
+        }
+
+        .nav-links {
+            display: grid;
+            gap: 7px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #e5defa;
+            padding: 12px;
+            border-radius: 9px;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        .sidebar-bottom a {
+            display: block;
+            color: #e5defa;
+            text-decoration: none;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 35px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+            font-size: 29px;
+            color: var(--dark);
+            margin-bottom: 7px;
+        }
+
+        .topbar p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .date-label {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 11px 15px;
+            color: var(--primary);
+            font-size: 13px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            padding: 20px;
+        }
+
+        .stat-card p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .stat-card strong {
+            color: var(--dark);
+            font-size: 28px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .panel h2 {
+            color: var(--dark);
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .progress-item {
+            margin-bottom: 22px;
+        }
+
+        .progress-heading {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 9px;
+            font-size: 13px;
+        }
+
+        .progress-heading strong {
+            color: var(--dark);
+        }
+
+        .progress-heading span {
+            color: var(--muted);
+        }
+
+        .progress-track {
+            height: 10px;
+            background: #eeeaf5;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--primary);
+            border-radius: 20px;
+            transition: width .4s ease;
+        }
+
+        .progress-fill.blue {
+            background: #224E94;
+        }
+
+        .progress-fill.green {
+            background: var(--green);
+        }
+
+        .message-card {
+            background: #f1edff;
+            border-radius: 12px;
+            padding: 18px;
+            color: var(--dark);
+            line-height: 1.6;
+            font-size: 13px;
+        }
+
+        .message-card strong {
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        .history-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .history-item span:first-child {
+            color: var(--text);
+        }
+
+        .history-item strong {
+            color: var(--primary);
+        }
+
+        .empty {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+            text-align: center;
+            padding: 15px 5px;
+        }
+
+        .refresh-btn {
+            background: #eee9ff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: var(--primary);
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1000px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 18px;
+            }
+
+            .logo {
+                margin: 0 0 18px;
+            }
+
+            .nav-links {
+                display: flex;
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+
+            .nav-links a {
+                white-space: nowrap;
+                font-size: 12px;
+            }
+
+            .nav-title,
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .main {
+                padding: 22px 15px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .stats {
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .panel {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="logo">Nova<span>Fokus</span></div>
+
+        <p class="nav-title">Menú principal</p>
+
+        <nav class="nav-links">
+            <a href="dashboard.html">Inicio</a>
+            <a href="metas.html">Mis metas</a>
+            <a href="habitos.html">Mis hábitos</a>
+            <a href="rutinas.html">Mis rutinas</a>
+            <a href="enfoque.html">Enfoque</a>
+            <a href="progreso.html" class="active">Mi progreso</a>
+            <a href="bienestar.html">Bienestar</a>
+            <a href="ia.html">NovaFokus AI</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="index.html">← Volver al inicio</a>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h1>Mi progreso</h1>
+                <p>Reconoce tus avances y observa todo lo que estás construyendo.</p>
+            </div>
+            <div class="date-label" id="fecha-actual"></div>
+        </header>
+
+        <section class="stats">
+            <article class="stat-card">
+                <p>Metas creadas</p>
+                <strong id="total-metas">0</strong>
+            </article>
+
+            <article class="stat-card">
+                <p>Metas completadas</p>
+                <strong id="metas-completadas">0</strong>
+            </article>
+
+            <article class="stat-card">
+                <p>Hábitos registrados</p>
+                <strong id="total-habitos">0</strong>
+            </article>
+
+            <article class="stat-card">
+                <p>Sesiones de enfoque</p>
+                <strong id="total-sesiones">0</strong>
+            </article>
+        </section>
+
+        <div class="content-grid">
+
+            <div>
+                <section class="panel">
+                    <h2>Resumen de mis avances</h2>
+                    <p class="description">
+                        Un vistazo a las actividades que has registrado en NovaFokus.
+                    </p>
+
+                    <div class="progress-item">
+                        <div class="progress-heading">
+                            <strong>Metas completadas</strong>
+                            <span id="texto-metas">0%</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" id="barra-metas"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-heading">
+                            <strong>Hábitos realizados hoy</strong>
+                            <span id="texto-habitos">0%</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill blue" id="barra-habitos"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-heading">
+                            <strong>Tiempo de enfoque acumulado</strong>
+                            <span id="texto-enfoque">0 minutos</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill green" id="barra-enfoque"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel">
+                    <h2>Actividad reciente</h2>
+                    <p class="description">
+                        Consulta tus últimas sesiones de concentración.
+                    </p>
+
+                    <div class="history-list" id="historial-sesiones">
+                        <div class="empty">
+                            Aún no tienes sesiones registradas.
+                            Cuando completes una sesión de enfoque, aparecerá aquí.
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div>
+                <section class="panel">
+                    <h2>Tu avance en números</h2>
+                    <p class="description">
+                        Datos calculados a partir de tus registros actuales.
+                    </p>
+
+                    <div class="history-list">
+                        <div class="history-item">
+                            <span>Metas pendientes</span>
+                            <strong id="metas-pendientes">0</strong>
+                        </div>
+
+                        <div class="history-item">
+                            <span>Hábitos realizados hoy</span>
+                            <strong id="habitos-hoy">0</strong>
+                        </div>
+
+                        <div class="history-item">
+                            <span>Rutinas organizadas</span>
+                            <strong id="total-rutinas">0</strong>
+                        </div>
+
+                        <div class="history-item">
+                            <span>Minutos de enfoque</span>
+                            <strong id="minutos-enfoque">0</strong>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="message-card">
+                    <strong>La constancia construye resultados</strong>
+                    No tienes que avanzar al mismo ritmo todos los días. Cada pequeño paso cuenta y merece ser reconocido.
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<script>
+    function leerDatos(clave) {
+        try {
+            const datos = JSON.parse(localStorage.getItem(clave));
+            return Array.isArray(datos) ? datos : [];
+        } catch {
+            return [];
+        }
+    }
+
+    function actualizarBarra(id, porcentaje) {
+        document.getElementById(id).style.width =
+            `${Math.min(100, Math.max(0, porcentaje))}%`;
+    }
+
+    function actualizarProgreso() {
+        const metas = leerDatos("novafokus_metas");
+        const habitos = leerDatos("novafokus_habitos");
+        const sesiones = leerDatos("novafokus_sesiones");
+        const rutinas = leerDatos("novafokus_rutinas");
+
+        const metasHechas = metas.filter(meta => meta.completada).length;
+        const metasPendientes = metas.length - metasHechas;
+
+        const fechaLocal = new Date();
+        const hoy = [
+            fechaLocal.getFullYear(),
+            String(fechaLocal.getMonth() + 1).padStart(2, "0"),
+            String(fechaLocal.getDate()).padStart(2, "0")
+        ].join("-");
+
+        const habitosHechos = habitos.filter(
+            habito => habito.ultimoRegistro === hoy
+        ).length;
+
+        const minutos = sesiones.reduce(
+            (total, sesion) => total + (Number(sesion.minutos) || 0),
+            0
+        );
+
+        document.getElementById("total-metas").textContent = metas.length;
+        document.getElementById("metas-completadas").textContent = metasHechas;
+        document.getElementById("total-habitos").textContent = habitos.length;
+        document.getElementById("total-sesiones").textContent = sesiones.length;
+
+        document.getElementById("metas-pendientes").textContent = metasPendientes;
+        document.getElementById("habitos-hoy").textContent = habitosHechos;
+        document.getElementById("total-rutinas").textContent = rutinas.length;
+        document.getElementById("minutos-enfoque").textContent = minutos;
+
+        const porcentajeMetas = metas.length
+            ? Math.round((metasHechas / metas.length) * 100)
+            : 0;
+
+        const porcentajeHabitos = habitos.length
+            ? Math.round((habitosHechos / habitos.length) * 100)
+            : 0;
+
+        const porcentajeEnfoque = Math.min(
+            100,
+            Math.round((minutos / 120) * 100)
+        );
+
+        document.getElementById("texto-metas").textContent =
+            `${porcentajeMetas}%`;
+
+        document.getElementById("texto-habitos").textContent =
+            `${porcentajeHabitos}%`;
+
+        document.getElementById("texto-enfoque").textContent =
+            `${minutos} minutos`;
+
+        actualizarBarra("barra-metas", porcentajeMetas);
+        actualizarBarra("barra-habitos", porcentajeHabitos);
+        actualizarBarra("barra-enfoque", porcentajeEnfoque);
+
+        mostrarHistorial(sesiones);
+    }
+
+    function mostrarHistorial(sesiones) {
+        const historial = document.getElementById("historial-sesiones");
+
+        historial.innerHTML = "";
+
+        if (sesiones.length === 0) {
+            historial.innerHTML = `
+                <div class="empty">
+                    Aún no tienes sesiones registradas.
+                    Cuando completes una sesión de enfoque, aparecerá aquí.
+                </div>
+            `;
+            return;
+        }
+
+        sesiones.slice(0, 5).forEach(sesion => {
+            const elemento = document.createElement("div");
+            elemento.className = "history-item";
+
+            const nombre = document.createElement("span");
+            nombre.textContent = sesion.objetivo || "Sesión de concentración";
+
+            const duracion = document.createElement("strong");
+            duracion.textContent = `${sesion.minutos || 0} min`;
+
+            elemento.append(nombre, duracion);
+            historial.appendChild(elemento);
+        });
+    }
+
+    const fecha = new Date();
+
+    document.getElementById("fecha-actual").textContent =
+        fecha.toLocaleDateString("es-CO", {
+            weekday: "long",
+            day: "numeric",
+            month: "long"
+        });
+
+    actualizarProgreso();
+
+    window.addEventListener("storage", actualizarProgreso);
+</script>
+
+</body>
+</html>
