@@ -288,24 +288,75 @@
     </main>
 
     <script>
-        const formulario = document.getElementById('login-form');
-        const mensaje = document.getElementById('mensaje');
+const formulario = document.querySelector("form");
+const correo = formulario.querySelector('input[type="email"]');
+const contrasena = formulario.querySelector('input[type="password"]');
 
-        formulario.addEventListener('submit', function(event) {
-            event.preventDefault();
+let mensaje = document.getElementById("mensaje");
 
-            mensaje.style.color = '#B42318';
-            mensaje.textContent =
-                'El inicio de sesión estará disponible cuando conectemos el sistema de usuarios.';
-        });
+if (!mensaje) {
+    mensaje = document.createElement("p");
+    mensaje.id = "mensaje";
+    mensaje.style.marginTop = "15px";
+    mensaje.style.textAlign = "center";
+    formulario.appendChild(mensaje);
+}
 
-        document.getElementById('recuperar').addEventListener('click', function(event) {
-            event.preventDefault();
-            mensaje.style.color = '#492C99';
-            mensaje.textContent =
-                'La recuperación de contraseña estará disponible próximamente.';
-        });
-    </script>
+function mostrarMensaje(texto, color) {
+    mensaje.textContent = texto;
+    mensaje.style.color = color;
+}
+
+async function cifrarContrasena(texto) {
+    const datos = new TextEncoder().encode(texto);
+    const hash = await crypto.subtle.digest("SHA-256", datos);
+
+    return Array.from(new Uint8Array(hash))
+        .map(byte => byte.toString(16).padStart(2, "0"))
+        .join("");
+}
+
+formulario.addEventListener("submit", async function(evento) {
+    evento.preventDefault();
+
+    try {
+        const usuarios = JSON.parse(
+            localStorage.getItem("novafokus_usuarios") || "[]"
+        );
+
+        const email = correo.value.trim().toLowerCase();
+        const hash = await cifrarContrasena(contrasena.value);
+
+        const usuario = usuarios.find(
+            elemento =>
+                elemento.email === email &&
+                elemento.passwordHash === hash
+        );
+
+        if (!usuario) {
+            mostrarMensaje("Correo o contraseña incorrectos.", "#dc2626");
+            return;
+        }
+
+        localStorage.setItem(
+            "novafokus_sesion",
+            JSON.stringify({
+                nombre: usuario.nombre,
+                email: usuario.email
+            })
+        );
+
+        mostrarMensaje("¡Bienvenido a NovaFokus! Entrando...", "#16a34a");
+
+        setTimeout(() => {
+            window.location.href = "dashboard.html";
+        }, 800);
+
+    } catch (error) {
+        mostrarMensaje("No se pudo iniciar sesión. Inténtalo nuevamente.", "#dc2626");
+    }
+});
+</script>
 
 </body>
 </html>

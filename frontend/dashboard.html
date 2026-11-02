@@ -533,7 +533,7 @@
 
         <div class="sidebar-bottom">
             <nav class="menu">
-                <a href="index.html">
+                <a href="#" id="cerrar-sesion">
                     <span class="menu-icon">↩</span>
                     Salir
                 </a>
@@ -723,6 +723,19 @@
 </div>
 
 <script>
+    const sesionActual = JSON.parse(
+    localStorage.getItem("novafokus_sesion") || "null"
+);
+
+if (!sesionActual) {
+    window.location.replace("login.html");
+} else {
+    const bienvenida = document.querySelector("h1");
+
+    if (bienvenida) {
+        bienvenida.textContent = `¡Hola, ${sesionActual.nombre}!`;
+    }
+}
     // Mostrar la fecha actual
     const fecha = new Date();
 
@@ -753,6 +766,13 @@
     } catch (error) {
         console.warn('No se pudieron cargar los datos locales.', error);
     }
+    document.getElementById("cerrar-sesion")?.addEventListener("click", function(evento) {
+    evento.preventDefault();
+
+    localStorage.removeItem("novafokus_sesion");
+
+    window.location.replace("login.html");
+});
 </script>
 
 </body>
