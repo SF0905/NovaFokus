@@ -522,13 +522,31 @@ if (!sesionActual) {
             `${Math.min(100, Math.max(0, porcentaje))}%`;
     }
 
-    function actualizarProgreso() {
-        const metas = leerDatos("novafokus_metas");
-        const habitos = leerDatos("novafokus_habitos");
-        const sesiones = leerDatos("novafokus_sesiones");
+    async function actualizarProgreso() {
+    try {
+        const opciones = { credentials: "include" };
+
+        const [respuestaMetas, respuestaHabitos, respuestaSesiones] =
+            await Promise.all([
+                fetch("http://localhost:3000/api/metas", opciones),
+                fetch("http://localhost:3000/api/habitos", opciones),
+                fetch("http://localhost:3000/api/sesiones", opciones)
+            ]);
+
+        if (!respuestaMetas.ok || !respuestaHabitos.ok || !respuestaSesiones.ok) {
+            throw new Error("No se pudieron cargar los datos.");
+        }
+
+        const metas = await respuestaMetas.json();
+        const habitos = await respuestaHabitos.json();
+        const sesiones = await respuestaSesiones.json();
+
         const rutinas = leerDatos("novafokus_rutinas");
 
-        const metasHechas = metas.filter(meta => meta.completada).length;
+        const metasHechas = metas.filter(
+            meta => Number(meta.completada) === 1
+        ).length;
+
         const metasPendientes = metas.length - metasHechas;
 
         const fechaLocal = new Date();
@@ -539,11 +557,12 @@ if (!sesionActual) {
         ].join("-");
 
         const habitosHechos = habitos.filter(
-            habito => habito.ultimoRegistro === hoy
+            habito => habito.ultimoRegistro &&
+            String(habito.ultimoRegistro).slice(0, 10) === hoy
         ).length;
 
         const minutos = sesiones.reduce(
-            (total, sesion) => total + (Number(sesion.minutos) || 0),
+            (total, sesion) => total + Number(sesion.minutos || 0),
             0
         );
 
@@ -584,7 +603,11 @@ if (!sesionActual) {
         actualizarBarra("barra-enfoque", porcentajeEnfoque);
 
         mostrarHistorial(sesiones);
+
+    } catch (error) {
+        console.error("Error al actualizar el progreso:", error);
     }
+}
 
     function mostrarHistorial(sesiones) {
         const historial = document.getElementById("historial-sesiones");
