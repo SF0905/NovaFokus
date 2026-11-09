@@ -303,93 +303,70 @@
     </main>
 
    ```html
-<script>
-const formulario = document.querySelector("form");
-const campos = formulario.querySelectorAll("input");
 
-const nombre = campos[0];
-const correo = formulario.querySelector('input[type="email"]');
-const contrasenas = formulario.querySelectorAll('input[type="password"]');
-const contrasena = contrasenas[0];
-const confirmar = contrasenas[1];
-const terminos = formulario.querySelector('input[type="checkbox"]');
+<script>
+
+const formulario = document.querySelector("form");
 const mensaje = document.getElementById("mensaje");
 
-function mostrarMensaje(texto, color) {
-    mensaje.textContent = texto;
-    mensaje.style.color = color;
-}
-
-async function cifrarContrasena(texto) {
-    const datos = new TextEncoder().encode(texto);
-    const hash = await crypto.subtle.digest("SHA-256", datos);
-
-    return Array.from(new Uint8Array(hash))
-        .map(byte => byte.toString(16).padStart(2, "0"))
-        .join("");
-}
-
-formulario.addEventListener("submit", async function(evento) {
+formulario.addEventListener("submit", async (evento) => {
     evento.preventDefault();
 
-    if (contrasena.value !== confirmar.value) {
-        mostrarMensaje("Las contraseñas no coinciden.", "#dc2626");
+    const nombre = document.getElementById("nombre").value.trim();
+    const correo = document.getElementById("correo").value.trim();
+    const contrasena = document.getElementById("contrasena").value;
+    const confirmar = document.getElementById("confirmar").value;
+
+    if (contrasena !== confirmar) {
+        mensaje.textContent = "Las contraseñas no coinciden.";
         return;
     }
 
-    if (contrasena.value.length < 8) {
-        mostrarMensaje("La contraseña debe tener al menos 8 caracteres.", "#dc2626");
-        return;
-    }
-
-    if (!terminos.checked) {
-        mostrarMensaje("Debes aceptar los términos para continuar.", "#dc2626");
-        return;
-    }
+    mensaje.style.color = "#B42318";
+    mensaje.textContent = "Creando tu cuenta...";
 
     try {
-        const usuarios = JSON.parse(
-            localStorage.getItem("novafokus_usuarios") || "[]"
+        const respuesta = await fetch(
+            "http://localhost:3000/api/auth/register",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    nombre,
+                    correo,
+                    contrasena
+                })
+            }
         );
 
-        const email = correo.value.trim().toLowerCase();
+        const datos = await respuesta.json();
 
-        if (usuarios.some(usuario => usuario.email === email)) {
-            mostrarMensaje("Este correo ya tiene una cuenta registrada.", "#dc2626");
+        if (!respuesta.ok) {
+            mensaje.textContent =
+                datos.mensaje || "No se pudo crear la cuenta.";
             return;
         }
 
-        const nuevoUsuario = {
-            nombre: nombre.value.trim(),
-            email: email,
-            passwordHash: await cifrarContrasena(contrasena.value)
-        };
-
-        usuarios.push(nuevoUsuario);
-
-        localStorage.setItem(
-            "novafokus_usuarios",
-            JSON.stringify(usuarios)
-        );
-
         localStorage.setItem(
             "novafokus_sesion",
-            JSON.stringify({
-                nombre: nuevoUsuario.nombre,
-                email: nuevoUsuario.email
-            })
+            JSON.stringify(datos.usuario)
         );
 
-        mostrarMensaje("¡Cuenta creada! Entrando a NovaFokus...", "#16a34a");
+        mensaje.style.color = "#16803C";
+        mensaje.textContent = "¡Cuenta creada correctamente!";
 
-        setTimeout(() => {
-            window.location.href = "dashboard.html";
-        }, 800);
+        window.location.replace("dashboard.html");
 
     } catch (error) {
-        mostrarMensaje("No se pudo crear la cuenta. Inténtalo de nuevo.", "#dc2626");
+        console.error("Error de registro:", error);
+        mensaje.textContent =
+            "No se pudo conectar con el servidor.";
     }
 });
+
 </script>
 </body>
 </html>
