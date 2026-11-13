@@ -1,0 +1,4 @@
+[build]
+  base = "frontend/react-app"
+  command = "npm run build"
+  publish = "dist"
