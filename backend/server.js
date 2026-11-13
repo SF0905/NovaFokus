@@ -365,6 +365,73 @@ app.delete("/api/habitos/:id", verificarSesion, (req, res) => {
 
     res.json({ mensaje: "Hábito eliminado." });
 });
+// ======================
+// RUTINAS
+// ======================
+
+app.get("/api/rutinas", verificarSesion, (req, res) => {
+    const rutinas = db.prepare(`
+        SELECT id, nombre, hora, categoria, descripcion, dias
+        FROM rutinas
+        WHERE usuario_id = ?
+        ORDER BY hora ASC
+    `).all(req.session.usuario.id);
+
+    res.json(rutinas.map(rutina => ({
+        ...rutina,
+        dias: rutina.dias ? JSON.parse(rutina.dias) : []
+    })));
+});
+
+app.post("/api/rutinas", verificarSesion, (req, res) => {
+    const { nombre, hora, categoria, descripcion, dias } = req.body;
+
+    if (!nombre || !nombre.trim() || !hora || !categoria) {
+        return res.status(400).json({
+            mensaje: "Completa los campos obligatorios."
+        });
+    }
+
+    if (!Array.isArray(dias) || dias.length === 0) {
+        return res.status(400).json({
+            mensaje: "Selecciona al menos un día."
+        });
+    }
+
+    const resultado = db.prepare(`
+        INSERT INTO rutinas (
+            usuario_id, nombre, hora, categoria, descripcion, dias
+        )
+        VALUES (?, ?, ?, ?, ?, ?)
+    `).run(
+        req.session.usuario.id,
+        nombre.trim(),
+        hora,
+        categoria,
+        descripcion || "",
+        JSON.stringify(dias)
+    );
+
+    res.status(201).json({
+        mensaje: "Rutina guardada.",
+        id: Number(resultado.lastInsertRowid)
+    });
+});
+
+app.delete("/api/rutinas/:id", verificarSesion, (req, res) => {
+    const resultado = db.prepare(`
+        DELETE FROM rutinas
+        WHERE id = ? AND usuario_id = ?
+    `).run(req.params.id, req.session.usuario.id);
+
+    if (!resultado.changes) {
+        return res.status(404).json({
+            mensaje: "Rutina no encontrada."
+        });
+    }
+
+    res.json({ mensaje: "Rutina eliminada." });
+});
 app.listen(PORT, () => {
     console.log(`NovaFokus backend disponible en http://localhost:${PORT}`);
 });

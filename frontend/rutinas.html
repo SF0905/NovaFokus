@@ -586,13 +586,34 @@ if (!sesionActual) {
     const formulario = document.getElementById("formulario-rutina");
     const lista = document.getElementById("lista-rutinas");
 
-    let rutinas = JSON.parse(localStorage.getItem("novafokus_rutinas")) || [];
+   const API_RUTINAS = "http://localhost:3000/api/rutinas";
+let rutinas = [];
 
     const diasOrdenados = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
 
-    function guardarRutinas() {
-        localStorage.setItem("novafokus_rutinas", JSON.stringify(rutinas));
+    async function cargarRutinas() {
+    try {
+        const respuesta = await fetch(API_RUTINAS, {
+            method: "GET",
+            credentials: "include"
+        });
+
+        if (respuesta.status === 401) {
+            window.location.replace("login.html");
+            return;
+        }
+
+        if (!respuesta.ok) {
+            throw new Error("No se pudieron cargar las rutinas.");
+        }
+
+        rutinas = await respuesta.json();
+        mostrarRutinas();
+    } catch (error) {
+        console.error("Error al cargar rutinas:", error);
+        alert("No se pudieron cargar las rutinas.");
     }
+}
 
     function actualizarResumen() {
         document.getElementById("total-rutinas").textContent = rutinas.length;
@@ -662,10 +683,23 @@ if (!sesionActual) {
             eliminar.type = "button";
             eliminar.setAttribute("aria-label", `Eliminar ${rutina.nombre}`);
 
-            eliminar.addEventListener("click", () => {
-                rutinas = rutinas.filter(item => item.id !== rutina.id);
-                guardarRutinas();
-                mostrarRutinas();
+            eliminar.addEventListener("click", async () => {
+                try {
+    const respuesta = await fetch(`${API_RUTINAS}/${id}`, {
+        method: "DELETE",
+        credentials: "include"
+    });
+
+    if (!respuesta.ok) {
+        throw new Error("No se pudo eliminar la rutina.");
+    }
+
+    rutinas = rutinas.filter(r => r.id !== id);
+    mostrarRutinas();
+} catch (error) {
+    console.error("Error al eliminar rutina:", error);
+    alert("No se pudo eliminar la rutina.");
+}
             });
 
             elemento.append(informacion, eliminar);
@@ -675,7 +709,7 @@ if (!sesionActual) {
         actualizarResumen();
     }
 
-    formulario.addEventListener("submit", function(evento) {
+    formulario.addEventListener("submit", async function(evento) {
         evento.preventDefault();
 
         const nombre = document.getElementById("nombre-rutina").value.trim();
@@ -696,16 +730,34 @@ if (!sesionActual) {
             alert("Selecciona al menos un día para tu rutina.");
             return;
         }
-
-        rutinas.push({
-            id: Date.now(),
+try {
+    const respuesta = await fetch(API_RUTINAS, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({
             nombre,
             hora,
             categoria,
             descripcion,
             dias: diasSeleccionados
-        });
+        })
+    });
 
+    if (!respuesta.ok) {
+        const error = await respuesta.json();
+        throw new Error(error.mensaje || "No se pudo guardar la rutina.");
+    }
+
+    await cargarRutinas();
+    formulario.reset();
+
+} catch (error) {
+    console.error("Error al guardar rutina:", error);
+    alert(error.message);
+}
         guardarRutinas();
         mostrarRutinas();
 
@@ -721,7 +773,7 @@ if (!sesionActual) {
             month: "long"
         });
 
-    mostrarRutinas();
+    cargarRutinas();
 </script>
 
 </body>

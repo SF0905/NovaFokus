@@ -57,7 +57,7 @@ db.exec(`
 `);
 
 function agregarColumna(tabla, columna, tipo) {
-    const tablasPermitidas = ["metas", "habitos", "sesiones_enfoque"];
+    const tablasPermitidas = ["metas", "habitos", "rutinas", "sesiones_enfoque"];
 
     if (!tablasPermitidas.includes(tabla)) {
         throw new Error("Tabla no permitida: " + tabla);
@@ -79,6 +79,9 @@ agregarColumna("metas", "plazo", "TEXT");
 
 agregarColumna("habitos", "categoria", "TEXT");
 agregarColumna("habitos", "ultimo_registro", "TEXT");
+agregarColumna("rutinas", "hora", "TEXT");
+agregarColumna("rutinas", "categoria", "TEXT");
+agregarColumna("rutinas", "dias", "TEXT");
 agregarColumna("sesiones_enfoque", "objetivo", "TEXT");
 
 console.log("Base de datos NovaFokus preparada.");

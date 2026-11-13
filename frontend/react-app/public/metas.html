@@ -1,0 +1,814 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis metas | NovaFokus</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --primary: #492C99;
+            --dark: #281270;
+            --text: #29253D;
+            --muted: #89859A;
+            --background: #F7F6FC;
+            --white: #FFFFFF;
+            --border: #ECEAF3;
+            --green: #16803C;
+            --red: #B42318;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--white);
+            border-right: 1px solid var(--border);
+            padding: 28px 18px;
+            position: fixed;
+            inset: 0 auto 0 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: var(--primary);
+            padding: 0 12px;
+            margin-bottom: 45px;
+        }
+
+        .menu-label {
+            color: #A29DB1;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            padding: 0 12px;
+            margin-bottom: 13px;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #77738A;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #F0ECFA;
+            color: var(--primary);
+        }
+
+        .menu-icon {
+            width: 22px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 38px 42px;
+            max-width: 1600px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+            color: var(--dark);
+            font-size: 27px;
+        }
+
+        .topbar p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .back-link {
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .intro-card {
+            background: linear-gradient(110deg, #492C99, #281270);
+            color: white;
+            padding: 27px 30px;
+            border-radius: 17px;
+            margin-bottom: 25px;
+        }
+
+        .intro-card h2 {
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .intro-card p {
+            color: #E4DDF7;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            padding: 19px;
+        }
+
+        .stat span {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .stat h3 {
+            color: var(--dark);
+            font-size: 26px;
+            margin-top: 7px;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 23px;
+        }
+
+        .panel h2 {
+            color: var(--dark);
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .panel-description {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #E1DEEB;
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            background: white;
+        }
+
+        .form-group textarea {
+            min-height: 85px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(73,44,153,0.09);
+        }
+
+        .primary-button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 9px;
+            background: var(--primary);
+            color: white;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .primary-button:hover {
+            background: var(--dark);
+        }
+
+        .message {
+            min-height: 18px;
+            margin-top: 12px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .list-header h2 {
+            margin: 0;
+        }
+
+        .filter {
+            padding: 9px 11px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            font-family: inherit;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .goal-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .goal-card {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 17px;
+            display: flex;
+            justify-content: space-between;
+            gap: 13px;
+            align-items: flex-start;
+        }
+
+        .goal-main {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            min-width: 0;
+        }
+
+        .goal-check {
+            width: 18px;
+            height: 18px;
+            margin-top: 3px;
+            accent-color: var(--primary);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .goal-info h3 {
+            font-size: 14px;
+            color: var(--dark);
+            overflow-wrap: anywhere;
+        }
+
+        .goal-info p {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .goal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 10px;
+        }
+
+        .tag {
+            background: #F0ECFA;
+            color: var(--primary);
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .completed .goal-info h3 {
+            text-decoration: line-through;
+            color: var(--muted);
+        }
+
+        .delete-button {
+            border: none;
+            background: #FFF0EF;
+            color: var(--red);
+            border-radius: 8px;
+            padding: 8px 10px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 45px 15px;
+            color: var(--muted);
+            border: 1px dashed #DCD7EA;
+            border-radius: 12px;
+        }
+
+        .empty-state span {
+            display: block;
+            font-size: 34px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            color: var(--dark);
+            font-size: 15px;
+            margin-bottom: 7px;
+        }
+
+        .empty-state p {
+            font-size: 12px;
+        }
+
+        @media (max-width: 1050px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 750px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 23px 16px;
+            }
+
+            .topbar h1 {
+                font-size: 23px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .stat {
+                padding: 13px 9px;
+            }
+
+            .stat h3 {
+                font-size: 21px;
+            }
+
+            .stat span {
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .goal-card {
+                padding: 13px;
+            }
+
+            .list-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <a href="dashboard.html" class="logo">NovaFokus.</a>
+
+        <p class="menu-label">ESPACIO PERSONAL</p>
+
+        <nav class="menu">
+            <a href="dashboard.html"><span class="menu-icon">⌂</span>Inicio</a>
+            <a href="metas.html" class="active"><span class="menu-icon">◎</span>Mis metas</a>
+            <a href="habitos.html"><span class="menu-icon">✓</span>Mis hábitos</a>
+            <a href="rutinas.html"><span class="menu-icon">▦</span>Rutinas</a>
+            <a href="enfoque.html"><span class="menu-icon">◷</span>Sesiones de enfoque</a>
+            <a href="progreso.html"><span class="menu-icon">↗</span>Mi progreso</a>
+            <a href="bienestar.html"><span class="menu-icon">♡</span>Bienestar</a>
+            <a href="ia.html"><span class="menu-icon">✧</span>NovaFokus AI</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <nav class="menu">
+                <a href="index.html"><span class="menu-icon">↩</span>Salir</a>
+            </nav>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <h1>Mis metas</h1>
+                <p>Define tu dirección y convierte tus ideas en acciones.</p>
+            </div>
+
+            <a href="dashboard.html" class="back-link">← Volver al panel</a>
+        </header>
+
+        <section class="intro-card">
+            <h2>Todo gran logro comienza con una meta.</h2>
+            <p>
+                No necesitas tener todo resuelto hoy. Elige aquello que
+                quieres alcanzar y avanza paso a paso.
+            </p>
+        </section>
+
+        <section class="stats">
+
+            <article class="stat">
+                <span>Total de metas</span>
+                <h3 id="metas-total">0</h3>
+            </article>
+
+            <article class="stat">
+                <span>Completadas</span>
+                <h3 id="metas-completadas">0</h3>
+            </article>
+
+            <article class="stat">
+                <span>Pendientes</span>
+                <h3 id="metas-pendientes">0</h3>
+            </article>
+
+        </section>
+
+        <section class="workspace">
+
+            <!-- FORMULARIO -->
+            <article class="panel">
+
+                <h2>Crear una meta</h2>
+                <p class="panel-description">
+                    Escribe lo que quieres conseguir y establece un plazo.
+                </p>
+
+                <form id="formulario-meta">
+
+                    <div class="form-group">
+                        <label for="titulo-meta">Nombre de la meta</label>
+                        <input
+                            type="text"
+                            id="titulo-meta"
+                            placeholder="Ej. Mejorar mis resultados académicos"
+                            maxlength="100"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcion-meta">Descripción (opcional)</label>
+                        <textarea
+                            id="descripcion-meta"
+                            placeholder="¿Qué quieres conseguir?"
+                            maxlength="300"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoria-meta">Categoría</label>
+                        <select id="categoria-meta" required>
+                            <option value="">Selecciona una categoría</option>
+                            <option value="Académica">Académica</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Salud y bienestar">Salud y bienestar</option>
+                            <option value="Profesional">Profesional</option>
+                            <option value="Financiera">Financiera</option>
+                            <option value="Otra">Otra</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="plazo-meta">Fecha límite (opcional)</label>
+                        <input type="date" id="plazo-meta">
+                    </div>
+
+                    <button type="submit" class="primary-button">
+                        + Agregar meta
+                    </button>
+
+                    <p class="message" id="mensaje-meta" aria-live="polite"></p>
+
+                </form>
+
+            </article>
+
+            <!-- LISTA DE METAS -->
+            <article class="panel">
+
+                <div class="list-header">
+                    <h2>Mis objetivos</h2>
+
+                    <select id="filtro-metas" class="filter">
+                        <option value="todas">Todas las metas</option>
+                        <option value="pendientes">Pendientes</option>
+                        <option value="completadas">Completadas</option>
+                    </select>
+                </div>
+
+                <div class="goal-list" id="lista-metas"></div>
+
+                <div class="empty-state" id="metas-vacias">
+                    <span>◎</span>
+                    <h3>Aún no tienes metas</h3>
+                    <p>Tu próximo logro puede comenzar aquí.</p>
+                </div>
+
+            </article>
+
+        </section>
+
+    </main>
+
+    <script>
+        const sesionActual = JSON.parse(
+    localStorage.getItem("novafokus_sesion") || "null"
+);
+
+if (!sesionActual) {
+    window.location.replace("login.html");
+}
+        const formulario = document.getElementById('formulario-meta');
+        const lista = document.getElementById('lista-metas');
+        const mensaje = document.getElementById('mensaje-meta');
+        const filtro = document.getElementById('filtro-metas');
+
+                const campoTitulo = document.getElementById('titulo-meta');
+        const campoDescripcion = document.getElementById('descripcion-meta');
+        const campoCategoria = document.getElementById('categoria-meta');
+        const campoPlazo = document.getElementById('plazo-meta');
+
+        const API_METAS = 'http://localhost:3000/api/metas';
+        let metas = [];
+
+        async function cargarMetas() {
+            try {
+                const respuesta = await fetch(API_METAS, {
+                    credentials: 'include'
+                });
+
+                if (!respuesta.ok) {
+                    throw new Error('No se pudieron cargar las metas.');
+                }
+
+                const datos = await respuesta.json();
+                const registros = Array.isArray(datos) ? datos : datos.metas;
+
+                metas = (registros || []).map(meta => ({
+                    ...meta,
+                    completada: Boolean(meta.completada)
+                }));
+
+                renderizarMetas();
+            } catch (error) {
+                mensaje.style.color = '#B42318';
+                mensaje.textContent = 'Error al cargar las metas. Comprueba que hayas iniciado sesión.';
+                console.error(error);
+            }
+        }
+
+        async function actualizarMeta(id, cambios) {
+            const respuesta = await fetch(`${API_METAS}/${id}`, {
+                method: 'PATCH',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(cambios)
+            });
+
+            if (!respuesta.ok) {
+                throw new Error('No se pudo actualizar la meta.');
+            }
+
+            await cargarMetas();
+        }
+
+        function actualizarResumen() {
+            const completadas = metas.filter(meta => meta.completada).length;
+
+            document.getElementById('metas-total').textContent = metas.length;
+            document.getElementById('metas-completadas').textContent = completadas;
+            document.getElementById('metas-pendientes').textContent =
+                metas.length - completadas;
+        }
+
+        function crearElementoMeta(meta) {
+            const tarjeta = document.createElement('article');
+            tarjeta.className = 'goal-card' + (meta.completada ? ' completed' : '');
+
+            const contenido = document.createElement('div');
+            contenido.className = 'goal-main';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'goal-check';
+            checkbox.checked = meta.completada;
+            checkbox.setAttribute('aria-label', 'Marcar meta como completada');
+
+            checkbox.addEventListener('change', async function() {
+                try {
+                    await actualizarMeta(meta.id, {
+                        completada: checkbox.checked
+                    });
+                } catch (error) {
+                    mensaje.style.color = '#B42318';
+                    mensaje.textContent = 'No se pudo actualizar la meta.';
+                    console.error(error);
+                }
+            });
+
+            const informacion = document.createElement('div');
+            informacion.className = 'goal-info';
+
+            const titulo = document.createElement('h3');
+            titulo.textContent = meta.titulo;
+            informacion.appendChild(titulo);
+
+            if (meta.descripcion) {
+                const descripcion = document.createElement('p');
+                descripcion.textContent = meta.descripcion;
+                informacion.appendChild(descripcion);
+            }
+
+            const etiquetas = document.createElement('div');
+            etiquetas.className = 'goal-tags';
+
+            const categoria = document.createElement('span');
+            categoria.className = 'tag';
+            categoria.textContent = meta.categoria || '';
+            etiquetas.appendChild(categoria);
+
+            if (meta.plazo) {
+                const fecha = document.createElement('span');
+                fecha.className = 'tag';
+                const partes = meta.plazo.split('-');
+                fecha.textContent = 'Fecha: ' + partes[2] + '/' +
+                    partes[1] + '/' + partes[0];
+                etiquetas.appendChild(fecha);
+            }
+
+            informacion.appendChild(etiquetas);
+            contenido.appendChild(checkbox);
+            contenido.appendChild(informacion);
+
+            const eliminar = document.createElement('button');
+            eliminar.type = 'button';
+            eliminar.className = 'delete-button';
+            eliminar.textContent = 'Eliminar';
+            eliminar.setAttribute('aria-label', 'Eliminar meta');
+
+            eliminar.addEventListener('click', async function() {
+                try {
+                    const respuesta = await fetch(`${API_METAS}/${meta.id}`, {
+                        method: 'DELETE',
+                        credentials: 'include'
+                    });
+
+                    if (!respuesta.ok) {
+                        throw new Error('No se pudo eliminar la meta.');
+                    }
+
+                    await cargarMetas();
+                } catch (error) {
+                    mensaje.style.color = '#B42318';
+                    mensaje.textContent = 'No se pudo eliminar la meta.';
+                    console.error(error);
+                }
+            });
+
+            tarjeta.appendChild(contenido);
+            tarjeta.appendChild(eliminar);
+            return tarjeta;
+        }
+
+        function renderizarMetas() {
+            lista.replaceChildren();
+
+            const seleccion = filtro.value;
+            const visibles = metas.filter(meta => {
+                if (seleccion === 'pendientes') return !meta.completada;
+                if (seleccion === 'completadas') return meta.completada;
+                return true;
+            });
+
+            visibles.forEach(meta => {
+                lista.appendChild(crearElementoMeta(meta));
+            });
+
+            document.getElementById('metas-vacias').style.display =
+                metas.length === 0 ? 'block' : 'none';
+
+            actualizarResumen();
+        }
+
+        formulario.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const titulo = campoTitulo.value.trim();
+
+            if (!titulo) {
+                mensaje.style.color = '#B42318';
+                mensaje.textContent = 'Escribe el nombre de tu meta.';
+                return;
+            }
+
+            try {
+                const respuesta = await fetch(API_METAS, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        titulo,
+                        descripcion: campoDescripcion.value.trim(),
+                        categoria: campoCategoria.value,
+                        plazo: campoPlazo.value
+                    })
+                });
+
+                if (!respuesta.ok) {
+                    throw new Error('No se pudo guardar la meta.');
+                }
+
+                formulario.reset();
+                mensaje.style.color = '#16803C';
+                mensaje.textContent = '¡Tu meta se agregó correctamente!';
+                await cargarMetas();
+            } catch (error) {
+                mensaje.style.color = '#B42318';
+                mensaje.textContent = 'Error al guardar la meta.';
+                console.error(error);
+            }
+        });
+
+        filtro.addEventListener('change', renderizarMetas);
+
+        cargarMetas();
+    </script>
+
+</body>
+</html>
